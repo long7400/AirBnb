@@ -3,14 +3,15 @@ package com.airbnb.entity;
 import com.airbnb.enums.UserStatus;
 import com.airbnb.enums.UserType;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Entity
 @Table(name = "user")
 public class User extends BaseEntity {
