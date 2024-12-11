@@ -1,13 +1,13 @@
 CREATE TABLE homestay
 (
     id           BIGINT AUTO_INCREMENT PRIMARY KEY,
-    name         VARCHAR(50) NOT NULL,
-    description  VARCHAR(50) NOT NULL,
-    type         VARCHAR(50) NOT NULL,
-    status       VARCHAR(50) NOT NULL,
-    phone_number VARCHAR(20) NOT NULL,
+    name         NVARCHAR(50) NOT NULL,
+    description  TEXT         NOT NULL,
+    type         VARCHAR(20)  NOT NULL,
+    status       VARCHAR(20)  NOT NULL,
+    phone_number VARCHAR(20)  NOT NULL,
 
-    address      VARCHAR(50) NOT NULL,
+    address      TEXT         NOT NULL,
     ward_id      INT,
     district_id  INT,
     province_id  INT,
@@ -29,12 +29,12 @@ CREATE TABLE homestay
 CREATE TABLE `user`
 (
     id         BIGINT AUTO_INCREMENT PRIMARY KEY,
-    username   TEXT        NOT NULL,
-    password   TEXT        NOT NULL,
-    email      TEXT        NOT NULL,
-    full_name   TEXT,
-    type       VARCHAR(50) NOT NULL,
-    status     VARCHAR(50) NOT NULL,
+    username   NVARCHAR(255) NOT NULL,
+    password   TEXT          NOT NULL,
+    email      NVARCHAR(255) NOT NULL,
+    full_name  NVARCHAR(255) NOT NULL,
+    type       VARCHAR(20)   NOT NULL,
+    status     VARCHAR(20)   NOT NULL,
 
     extra_data JSON,
     version    BIGINT,
@@ -47,11 +47,11 @@ CREATE TABLE `user`
 CREATE TABLE profile
 (
     user_id    BIGINT      NOT NULL,
-    avatar     TEXT,
-    work       TEXT,
+    avatar     NVARCHAR(255),
+    work       NVARCHAR(255),
     about      TEXT,
     interests  JSON,
-    status     VARCHAR(50) NOT NULL,
+    status     VARCHAR(20) NOT NULL,
 
     extra_data JSON,
     version    BIGINT,
@@ -73,14 +73,14 @@ CREATE TABLE booking
     guests        SMALLINT       NOT NULL,
     status        VARCHAR(50)    NOT NULL,
 
-    currency      TEXT           NOT NULL,
+    currency      NVARCHAR(10)   NOT NULL,
     subtotal      DECIMAL(12, 6),
     discount      DECIMAL(8, 6),
     total_amount  DECIMAL(12, 2) NOT NULL,
     price_detail  JSON,
 
     note          TEXT,
-    request_id    TEXT           NOT NULL,
+    request_id    NVARCHAR(255)  NOT NULL,
 
     version       SMALLINT,
     extra_data    JSON,
@@ -102,8 +102,8 @@ CREATE TABLE homestay_availability
 CREATE TABLE amenity
 (
     id   INT AUTO_INCREMENT PRIMARY KEY,
-    name TEXT NOT NULL,
-    icon TEXT NOT NULL
+    name NVARCHAR(255) NOT NULL,
+    icon NVARCHAR(255) NOT NULL
 ) ENGINE = InnoDB;
 
 CREATE TABLE homestay_amenity
@@ -118,20 +118,20 @@ CREATE TABLE homestay_amenity
 CREATE TABLE ward
 (
     id          INT AUTO_INCREMENT PRIMARY KEY,
-    ward_name   TEXT NOT NULL,
+    ward_name   NVARCHAR(255) NOT NULL,
     district_id INT
 ) ENGINE = InnoDB;
 
 CREATE TABLE district
 (
     id            INT AUTO_INCREMENT PRIMARY KEY,
-    district_name TEXT NOT NULL,
+    district_name NVARCHAR(255) NOT NULL,
     province_id   INT
 ) ENGINE = InnoDB;
 
 CREATE TABLE province
 (
     id            INT AUTO_INCREMENT PRIMARY KEY,
-    province_name TEXT NOT NULL,
+    province_name NVARCHAR(255) NOT NULL,
     country_id    INT
 ) ENGINE = InnoDB;
