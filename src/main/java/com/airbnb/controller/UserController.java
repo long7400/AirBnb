@@ -1,5 +1,6 @@
 package com.airbnb.controller;
 
+import com.airbnb.dto.request.user.LoginRequest;
 import com.airbnb.dto.request.user.UserRegistrationRequest;
 import com.airbnb.dto.response.common.CommonResponse;
 import com.airbnb.dto.response.common.ResponseCode;
@@ -24,11 +25,19 @@ public class UserController {
     @Resource
     private CommonMapper commonMapper;
 
-    @PostMapping
+    @PostMapping("/register")
     public CommonResponse<String> registerUser(@Validated @RequestBody UserRegistrationRequest request) {
         log.info(" ===== Start API register user ===== ");
         userService.registerUser(request);
         log.info("User [{}] registered successfully.", request.getUsername());
         return commonMapper.mapToCommonResponse(ResponseCode.CREATED, "User " + request.getUsername() + " registered successfully.");
+    }
+
+    @PostMapping("/login")
+    public CommonResponse<String> login(@RequestBody LoginRequest loginRequest) {
+        log.info(" ===== Start API login user ===== ");
+        String token = userService.login(loginRequest);
+        log.info("User [{}] login successfully.", loginRequest.getUsername());
+        return commonMapper.mapToCommonResponse(ResponseCode.CREATED, token);
     }
 }
