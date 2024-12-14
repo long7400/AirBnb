@@ -1,8 +1,8 @@
-package com.airbnb.mapper.impl;
+package com.airbnb.mapper.common.impl;
 
 import com.airbnb.dto.response.common.CommonResponse;
 import com.airbnb.dto.response.common.ResponseCode;
-import com.airbnb.mapper.CommonMapper;
+import com.airbnb.mapper.common.CommonMapper;
 import org.springframework.stereotype.Component;
 
 @Component

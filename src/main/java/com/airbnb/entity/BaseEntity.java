@@ -4,8 +4,8 @@ import jakarta.persistence.Column;
 import jakarta.persistence.MappedSuperclass;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import java.time.Instant;
 import java.time.LocalDateTime;
@@ -13,7 +13,10 @@ import java.time.ZoneId;
 
 @Getter
 @Setter
+@SuperBuilder
 @MappedSuperclass
+@NoArgsConstructor
+@AllArgsConstructor
 public abstract class BaseEntity {
 
     @Column(name = "created_at")
@@ -27,6 +30,9 @@ public abstract class BaseEntity {
 
     @Column(name = "updated_by")
     private Long updatedBy;
+
+    @Column(name = "is_delete", nullable = false)
+    private Boolean isDelete;
 
     @PrePersist
     public void prePersist() {

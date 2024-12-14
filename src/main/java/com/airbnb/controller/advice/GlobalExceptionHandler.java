@@ -2,6 +2,7 @@ package com.airbnb.controller.advice;
 
 import com.airbnb.dto.response.common.CommonResponse;
 import com.airbnb.exception.DuplicateEntityException;
+import com.airbnb.exception.UserNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -75,5 +76,14 @@ public class GlobalExceptionHandler {
         );
 
         return new ResponseEntity<>(response, HttpStatus.FORBIDDEN);
+    }
+
+    @ExceptionHandler(UserNotFoundException.class)
+    public ResponseEntity<CommonResponse<String>> handleUserNotFoundException(UserNotFoundException ex) {
+        CommonResponse<String> response = new CommonResponse<>(
+                HttpStatus.NOT_FOUND.value(),
+                "Data not found",
+                ex.getMessage());
+        return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
     }
 }

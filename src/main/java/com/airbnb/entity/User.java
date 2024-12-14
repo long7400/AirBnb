@@ -4,14 +4,15 @@ import com.airbnb.enums.UserStatus;
 import com.airbnb.enums.UserType;
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import java.util.List;
 
 @Getter
 @Setter
+@SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 @Entity
 @Table(name = "user")
 public class User extends BaseEntity {

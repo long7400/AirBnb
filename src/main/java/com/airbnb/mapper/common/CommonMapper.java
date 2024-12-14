@@ -1,4 +1,4 @@
-package com.airbnb.mapper;
+package com.airbnb.mapper.common;
 
 import com.airbnb.dto.response.common.CommonResponse;
 import com.airbnb.dto.response.common.ResponseCode;

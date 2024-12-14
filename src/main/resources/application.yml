@@ -19,6 +19,12 @@ spring:
     hibernate:
       ddl-auto: none
     show-sql: true
+    properties:
+      hibernate:
+        enable_lazy_load_no_trans: true
+        format_sql: true
+      connection:
+        autocommit: false
   flyway:
     baseline-on-migrate: true
     locations: classpath:db/migration

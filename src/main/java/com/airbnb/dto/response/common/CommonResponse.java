@@ -7,9 +7,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class CommonResponse<T> {
 
+    private T data;
     private int status;
     private String message;
-    private T data;
 
     public CommonResponse(int status, String message, T data) {
         this.status = status;

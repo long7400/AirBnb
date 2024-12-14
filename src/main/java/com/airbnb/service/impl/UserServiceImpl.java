@@ -3,10 +3,12 @@ package com.airbnb.service.impl;
 import com.airbnb.config.JwtUtil;
 import com.airbnb.dto.request.user.LoginRequest;
 import com.airbnb.dto.request.user.UserRegistrationRequest;
+import com.airbnb.dto.response.user.UserResponse;
 import com.airbnb.entity.User;
 import com.airbnb.entity.UserToken;
 import com.airbnb.exception.DuplicateEntityException;
-import com.airbnb.mapper.UserMapper;
+import com.airbnb.exception.UserNotFoundException;
+import com.airbnb.mapper.user.UserMapper;
 import com.airbnb.repository.UserRepository;
 import com.airbnb.repository.UserTokenRepository;
 import com.airbnb.service.UserService;
@@ -18,11 +20,11 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -63,6 +65,7 @@ public class UserServiceImpl implements UserService {
         userRepository.save(newUser);
     }
 
+    @Transactional
     @Override
     public String login(LoginRequest loginRequest) {
         try {
@@ -79,13 +82,15 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-    public User getUserById(Long userId) {
-        return null;
+    public UserResponse getUserById(Long userId) {
+        User user = userRepository.findByIdWithBookings(userId)
+                .orElseThrow(() -> new UserNotFoundException("User not found with ID: " + userId));
+        return userMapper.toResponse(user);
     }
 
     @Override
-    public List<User> listUsers() {
-        return List.of();
+    public List<User> getUsers() {
+        return userRepository.findAllUser();
     }
 
     /**
@@ -148,11 +153,13 @@ public class UserServiceImpl implements UserService {
      * @return the newly generated token string
      */
     private String createAndStoreNewToken(String username) {
+        userTokenRepository.softDeleteOldTokensByUsername(username);
         String newToken = jwtUtil.generateToken(username);
         UserToken userToken = UserToken.builder()
                 .username(username)
                 .token(newToken)
                 .expiresAt(LocalDateTime.ofInstant(Instant.now(), ZoneId.systemDefault()).plusMinutes(15))
+                .isDelete(false)
                 .build();
         userTokenRepository.save(userToken);
         return newToken;
