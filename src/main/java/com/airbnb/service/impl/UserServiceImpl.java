@@ -1,6 +1,7 @@
 package com.airbnb.service.impl;
 
 import com.airbnb.config.JwtUtil;
+import com.airbnb.dto.request.user.ChangePassRequest;
 import com.airbnb.dto.request.user.LoginRequest;
 import com.airbnb.dto.request.user.UserRegistrationRequest;
 import com.airbnb.dto.response.user.UserResponse;
@@ -114,9 +115,19 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    @Transactional
     @Override
-    public void changePassword(Long userId, String oldPassword, String newPassword) {
+    public void changePassword(Long userId, ChangePassRequest request) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new UserNotFoundException("User not found with ID: " + userId));
 
+        if (!passwordEncoder.matches(request.getOldPassword(), user.getPassword())) {
+            throw new IllegalArgumentException("Incorrect old password");
+        }
+
+        String encodedNewPassword = passwordEncoder.encode(request.getNewPassword());
+        user.setPassword(encodedNewPassword);
+        userRepository.save(user);
     }
 
     /**

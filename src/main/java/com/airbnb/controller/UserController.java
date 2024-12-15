@@ -1,5 +1,6 @@
 package com.airbnb.controller;
 
+import com.airbnb.dto.request.user.ChangePassRequest;
 import com.airbnb.dto.request.user.LoginRequest;
 import com.airbnb.dto.request.user.UserRegistrationRequest;
 import com.airbnb.dto.response.common.CommonResponse;
@@ -60,16 +61,18 @@ public class UserController {
     @DeleteMapping("/delete")
     public CommonResponse<String> deleteUser(@RequestParam Long userId) {
         log.info(" ===== Start API delete user with ID: {} ===== ", userId);
-        userService.deleteUser(userId);
-        log.info("User [{}] deleted successfully.", userId);
-        return commonMapper.mapToCommonResponse(ResponseCode.SUCCESS, "User with ID " + userId + " deleted successfully.");
+        boolean isDelete = userService.deleteUser(userId);
+        if (isDelete) {
+            return commonMapper.mapToCommonResponse(ResponseCode.SUCCESS, "User with ID " + userId + " deleted successfully.");
+        }
+        return commonMapper.mapToCommonResponse(ResponseCode.BUSINESS_ERROR, "User with ID " + userId + " deleted failed.");
     }
 
     @PutMapping("/{userId}/change-password")
     public CommonResponse<String> changePassword(@PathVariable Long userId,
-            @RequestParam String oldPassword, @RequestParam String newPassword) {
+                                                 @RequestBody ChangePassRequest request) {
         log.info(" ===== Start API change password for user ID: {} ===== ", userId);
-        userService.changePassword(userId, oldPassword, newPassword);
+        userService.changePassword(userId, request);
         log.info("Password for user [{}] updated successfully.", userId);
         return commonMapper.mapToCommonResponse(ResponseCode.SUCCESS, "Password updated successfully for user ID " + userId);
     }

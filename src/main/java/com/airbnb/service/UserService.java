@@ -1,5 +1,6 @@
 package com.airbnb.service;
 
+import com.airbnb.dto.request.user.ChangePassRequest;
 import com.airbnb.dto.request.user.LoginRequest;
 import com.airbnb.dto.request.user.UserRegistrationRequest;
 import com.airbnb.dto.response.user.UserResponse;
@@ -18,5 +19,5 @@ public interface UserService {
 
     boolean deleteUser(Long userId);
 
-    void changePassword(Long userId, String oldPassword, String newPassword);
+    void changePassword(Long userId, ChangePassRequest request);
 }
