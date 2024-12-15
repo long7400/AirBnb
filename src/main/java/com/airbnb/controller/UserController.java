@@ -54,7 +54,23 @@ public class UserController {
     public CommonResponse<List<User>> getAll() {
         log.info(" ===== Start API get all user ===== ");
         List<User> users = userService.getUsers();
-        log.info("Get all user [{}] successfully.", users);
         return commonMapper.mapToCommonResponse(ResponseCode.CREATED, users);
+    }
+
+    @DeleteMapping("/delete")
+    public CommonResponse<String> deleteUser(@RequestParam Long userId) {
+        log.info(" ===== Start API delete user with ID: {} ===== ", userId);
+        userService.deleteUser(userId);
+        log.info("User [{}] deleted successfully.", userId);
+        return commonMapper.mapToCommonResponse(ResponseCode.SUCCESS, "User with ID " + userId + " deleted successfully.");
+    }
+
+    @PutMapping("/{userId}/change-password")
+    public CommonResponse<String> changePassword(@PathVariable Long userId,
+            @RequestParam String oldPassword, @RequestParam String newPassword) {
+        log.info(" ===== Start API change password for user ID: {} ===== ", userId);
+        userService.changePassword(userId, oldPassword, newPassword);
+        log.info("Password for user [{}] updated successfully.", userId);
+        return commonMapper.mapToCommonResponse(ResponseCode.SUCCESS, "Password updated successfully for user ID " + userId);
     }
 }

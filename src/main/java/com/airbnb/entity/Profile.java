@@ -1,9 +1,13 @@
 package com.airbnb.entity;
 
 import com.airbnb.enums.ProfileStatus;
+import io.hypersistence.utils.hibernate.type.array.ListArrayType;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.Type;
+
+import java.util.List;
 
 @Getter
 @Setter
@@ -20,15 +24,17 @@ public class Profile extends BaseEntity {
 
     private String about;
 
-    @Column(columnDefinition = "json")
-    private String interests;
+    @Column(name = "interests", columnDefinition = "text[]")
+    @Type(ListArrayType.class)
+    private List<String> interests;
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private ProfileStatus status;
 
-    @Column(name = "extra_data", columnDefinition = "json")
-    private String extraData;
+    @Column(name = "extra_data", columnDefinition = "text[]")
+    @Type(ListArrayType.class)
+    private List<String> extraData;
 
     private Long version;
 

@@ -21,6 +21,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 
 import java.time.Instant;
 import java.time.LocalDateTime;
@@ -91,6 +92,31 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<User> getUsers() {
         return userRepository.findAllUser();
+    }
+
+    @Transactional
+    @Override
+    public boolean deleteUser(Long userId) {
+        try {
+            User user = userRepository.findUserById(userId)
+                    .orElseThrow(() -> new UserNotFoundException("User not found"));
+            if (user.getProfile() != null) {
+                user.getProfile().setIsDelete(true);
+            }
+            if (!CollectionUtils.isEmpty(user.getBookings())) {
+                user.getBookings().forEach(booking -> booking.setIsDelete(true));
+            }
+            user.setIsDelete(true);
+            return true;
+        } catch (Exception e) {
+            log.error("Delete user failed: {}", e.getMessage());
+            throw e;
+        }
+    }
+
+    @Override
+    public void changePassword(Long userId, String oldPassword, String newPassword) {
+
     }
 
     /**

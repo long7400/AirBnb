@@ -23,7 +23,6 @@ public class UserToken extends BaseEntity {
     private String username;
 
     @Column(nullable = false, unique = true)
-    @Lob
     private String token;
 
     @Column(nullable = false)

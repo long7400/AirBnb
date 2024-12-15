@@ -2,9 +2,11 @@ package com.airbnb.entity;
 
 import com.airbnb.enums.UserStatus;
 import com.airbnb.enums.UserType;
+import io.hypersistence.utils.hibernate.type.array.ListArrayType;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
+import org.hibernate.annotations.Type;
 
 import java.util.List;
 
@@ -14,7 +16,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "user")
+@Table(name = "user_airbnb")
 public class User extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -40,8 +42,9 @@ public class User extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private UserStatus status;
 
-    @Column(name = "extra_data", columnDefinition = "json")
-    private String extraData;
+    @Column(name = "extra_data", columnDefinition = "text[]")
+    @Type(ListArrayType.class)
+    private List<String> extraData;
 
     private Long version;
 

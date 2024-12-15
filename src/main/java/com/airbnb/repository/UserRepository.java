@@ -12,18 +12,21 @@ import java.util.Optional;
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
 
-    @Query("SELECT CASE WHEN COUNT(u) > 0 THEN TRUE ELSE FALSE END FROM User u WHERE u.username = :username AND u.isDelete = FALSE ")
+    @Query("SELECT CASE WHEN COUNT(u) > 0 THEN TRUE ELSE FALSE END FROM User u WHERE LOWER(u.username) = LOWER(:username) AND u.isDelete = FALSE")
     boolean existsByUsername(@Param("username") String username);
 
-    @Query("SELECT CASE WHEN COUNT(u) > 0 THEN TRUE ELSE FALSE END FROM User u WHERE u.email = :email AND u.isDelete = FALSE ")
+    @Query("SELECT CASE WHEN COUNT(u) > 0 THEN TRUE ELSE FALSE END FROM User u WHERE LOWER(u.email) = LOWER(:email) AND u.isDelete = FALSE")
     boolean existsByEmail(@Param("email") String email);
 
-    @Query("SELECT u FROM User u WHERE u.username = :username AND u.isDelete = FALSE")
+    @Query("SELECT u FROM User u WHERE LOWER(u.username) = LOWER(:username) AND u.isDelete = FALSE")
     Optional<User> findByUsername(@Param("username") String username);
 
-    @Query("SELECT u FROM User u LEFT JOIN u.bookings WHERE u.id = :userId AND u.isDelete = FALSE")
+    @Query("SELECT u FROM User u LEFT JOIN FETCH u.bookings WHERE u.id = :userId AND u.isDelete = FALSE")
     Optional<User> findByIdWithBookings(@Param("userId") Long userId);
 
     @Query("SELECT u FROM User u WHERE u.isDelete = FALSE")
     List<User> findAllUser();
+
+    @Query("SELECT u FROM User u WHERE u.id = :userId AND u.isDelete = FALSE")
+    Optional<User> findUserById(@Param("userId") Long userId);
 }

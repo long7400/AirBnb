@@ -1,12 +1,15 @@
 package com.airbnb.entity;
 
 import com.airbnb.enums.BookingStatus;
+import io.hypersistence.utils.hibernate.type.array.ListArrayType;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.Type;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.List;
 
 @Getter
 @Setter
@@ -39,8 +42,9 @@ public class Booking extends BaseEntity {
     @Column(name = "total_amount", nullable = false)
     private BigDecimal totalAmount;
 
-    @Column(name = "price_detail", columnDefinition = "json")
-    private String priceDetail;
+    @Column(name = "price_detail", columnDefinition = "text[]")
+    @Type(ListArrayType.class)
+    private List<String> priceDetail;
 
     private String note;
 
@@ -49,8 +53,9 @@ public class Booking extends BaseEntity {
 
     private Short version;
 
-    @Column(name = "extra_data", columnDefinition = "json")
-    private String extraData;
+    @Column(name = "extra_data", columnDefinition = "text[]")
+    @Type(ListArrayType.class)
+    private List<String> extraData;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)

@@ -15,4 +15,8 @@ public interface UserService {
     UserResponse getUserById(Long userId);
 
     List<User> getUsers();
+
+    boolean deleteUser(Long userId);
+
+    void changePassword(Long userId, String oldPassword, String newPassword);
 }

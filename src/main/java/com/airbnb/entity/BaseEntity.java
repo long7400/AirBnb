@@ -34,16 +34,32 @@ public abstract class BaseEntity {
     @Column(name = "is_delete", nullable = false)
     private Boolean isDelete;
 
+    @Column(name = "deleted_at")
+    private LocalDateTime deletedAt;
+
     @PrePersist
     public void prePersist() {
         if (this.createdAt == null) {
             this.createdAt = LocalDateTime.ofInstant(Instant.now(), ZoneId.systemDefault());
         }
         this.updatedAt = LocalDateTime.ofInstant(Instant.now(), ZoneId.systemDefault());
+
+        if (Boolean.TRUE.equals(this.isDelete)) {
+            this.deletedAt = LocalDateTime.ofInstant(Instant.now(), ZoneId.systemDefault());
+        } else {
+            this.deletedAt = null;
+        }
     }
 
     @PreUpdate
     public void preUpdate() {
         this.updatedAt = LocalDateTime.ofInstant(Instant.now(), ZoneId.systemDefault());
+
+        if (Boolean.TRUE.equals(this.isDelete)) {
+            this.deletedAt = LocalDateTime.ofInstant(Instant.now(), ZoneId.systemDefault());
+        } else {
+            this.deletedAt = null;
+        }
+
     }
 }

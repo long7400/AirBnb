@@ -2,9 +2,11 @@ package com.airbnb.entity;
 
 import com.airbnb.enums.HomestayStatus;
 import com.airbnb.enums.HomestayType;
+import io.hypersistence.utils.hibernate.type.array.ListArrayType;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.Type;
 
 import java.util.List;
 
@@ -45,8 +47,9 @@ public class Homestay extends BaseEntity {
     @Column(name = "province_id")
     private Integer provinceId;
 
-    @Column(columnDefinition = "json")
-    private String images;
+    @Column(name = "images", columnDefinition = "text[]")
+    @Type(ListArrayType.class)
+    private List<String> images;
 
     private Short guests;
 
@@ -54,8 +57,9 @@ public class Homestay extends BaseEntity {
 
     private Short bathrooms;
 
-    @Column(name = "extra_data", columnDefinition = "json")
-    private String extraData;
+    @Column(name = "extra_data", columnDefinition = "text[]")
+    @Type(ListArrayType.class)
+    private List<String> extraData;
 
     private Long version;
 
