@@ -1,6 +1,7 @@
 package com.airbnb.dto.response.user;
 
 import com.airbnb.dto.response.booking.BookingResponse;
+import com.airbnb.dto.response.profile.ProfileResponse;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -20,4 +21,5 @@ public class UserResponse {
     private String email;
     private String fullName;
     private List<BookingResponse> bookings;
+    private ProfileResponse profile;
 }

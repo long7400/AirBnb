@@ -4,12 +4,16 @@ import com.airbnb.config.JwtUtil;
 import com.airbnb.dto.request.user.ChangePassRequest;
 import com.airbnb.dto.request.user.LoginRequest;
 import com.airbnb.dto.request.user.UserRegistrationRequest;
+import com.airbnb.dto.response.profile.ProfileResponse;
 import com.airbnb.dto.response.user.UserResponse;
+import com.airbnb.entity.Profile;
 import com.airbnb.entity.User;
 import com.airbnb.entity.UserToken;
 import com.airbnb.exception.DuplicateEntityException;
 import com.airbnb.exception.UserNotFoundException;
+import com.airbnb.mapper.profile.ProfileMapper;
 import com.airbnb.mapper.user.UserMapper;
+import com.airbnb.repository.ProfileRepository;
 import com.airbnb.repository.UserRepository;
 import com.airbnb.repository.UserTokenRepository;
 import com.airbnb.service.UserService;
@@ -42,10 +46,16 @@ public class UserServiceImpl implements UserService {
     private UserTokenRepository userTokenRepository;
 
     @Resource
+    private ProfileRepository profileRepository;
+
+    @Resource
     private PasswordEncoder passwordEncoder;
 
     @Resource
     private UserMapper userMapper;
+
+    @Resource
+    private ProfileMapper profileMapper;
 
     @Resource
     private AuthenticationManager authenticationManager;
@@ -85,9 +95,22 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserResponse getUserById(Long userId) {
-        User user = userRepository.findByIdWithBookings(userId)
-                .orElseThrow(() -> new UserNotFoundException("User not found with ID: " + userId));
-        return userMapper.toResponse(user);
+        try {
+            User user = userRepository.findByIdWithBookings(userId)
+                    .orElseThrow(() -> new UserNotFoundException("User not found with ID: " + userId));
+            UserResponse userResponse = userMapper.toResponse(user);
+
+            Profile profile = profileRepository.findById(userId).orElse(null);
+            if (profile != null) {
+                ProfileResponse profileResponse = profileMapper.toReponse(profile);
+                userResponse.setProfile(profileResponse);
+            }
+            return userResponse;
+
+        } catch (Exception e) {
+            log.error("An unexpected error occurred while retrieving user information.", e);
+            throw e;
+        }
     }
 
     @Override

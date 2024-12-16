@@ -48,7 +48,7 @@ public class UserController {
         log.info(" ===== Start API get user by ID ===== ");
         UserResponse user = userService.getUserById(userId);
         log.info("Get user [{}] successfully.", userId);
-        return commonMapper.mapToCommonResponse(ResponseCode.CREATED, user);
+        return commonMapper.mapToCommonResponse(ResponseCode.SUCCESS, user);
     }
 
     @GetMapping
