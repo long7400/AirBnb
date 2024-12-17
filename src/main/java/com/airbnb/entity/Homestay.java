@@ -7,6 +7,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.Type;
+import org.locationtech.jts.geom.Point;
 
 import java.util.List;
 
@@ -38,14 +39,9 @@ public class Homestay extends BaseEntity {
 
     private String address;
 
-    @Column(name = "ward_id")
-    private Integer wardId;
-
-    @Column(name = "district_id")
-    private Integer districtId;
-
-    @Column(name = "province_id")
-    private Integer provinceId;
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "ward_id", referencedColumnName = "id", nullable = false)
+    private Ward ward;
 
     @Column(name = "images", columnDefinition = "text[]")
     @Type(ListArrayType.class)
@@ -70,11 +66,20 @@ public class Homestay extends BaseEntity {
     @OneToMany(mappedBy = "homestay", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Booking> bookings;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "homestay_amenity",
             joinColumns = @JoinColumn(name = "homestay_id"),
             inverseJoinColumns = @JoinColumn(name = "amenity_id")
     )
     private List<Amenity> amenities;
+
+    @Column(name = "longitude")
+    private Double longitude;
+
+    @Column(name = "latitude")
+    private Double latitude;
+
+    @Column(name = "geom", columnDefinition = "geometry(Point, 3857)")
+    private Point geom;
 }

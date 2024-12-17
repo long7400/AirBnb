@@ -20,10 +20,7 @@ public class Ward {
 
     @Column(name = "district_id")
     private Integer districtId;
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "district_id", insertable = false, updatable = false)
-    private District district;
 
-    @OneToMany(mappedBy = "wardId", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "ward", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Homestay> homestays;
 }

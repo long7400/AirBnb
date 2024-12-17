@@ -21,6 +21,6 @@ public class Amenity {
     @Column(nullable = false)
     private String icon;
 
-    @ManyToMany(mappedBy = "amenities")
+    @ManyToMany(mappedBy = "amenities", fetch = FetchType.LAZY)
     private List<Homestay> homestays;
 }

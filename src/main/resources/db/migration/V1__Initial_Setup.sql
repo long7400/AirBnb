@@ -1,3 +1,5 @@
+CREATE EXTENSION postgis;
+
 CREATE TABLE homestay
 (
     id           BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
@@ -8,9 +10,9 @@ CREATE TABLE homestay
     phone_number VARCHAR(20) NOT NULL,
 
     address      TEXT        NOT NULL,
-    ward_id      INTEGER,
-    district_id  INTEGER,
-    province_id  INTEGER,
+    longitude    DOUBLE PRECISION,
+    latitude     DOUBLE PRECISION,
+    geom         geometry(Point, 3857),
 
     images       TEXT[],
 
@@ -80,7 +82,6 @@ CREATE TABLE booking
     note          TEXT,
     request_id    VARCHAR(255)   NOT NULL,
 
-    version       SMALLINT,
     extra_data    TEXT[],
     created_at    TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     created_by    BIGINT,
@@ -115,21 +116,10 @@ CREATE TABLE homestay_amenity
 
 CREATE TABLE ward
 (
-    id          BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    ward_name   VARCHAR(255) NOT NULL,
-    district_id INTEGER
+    id        BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    ward_name VARCHAR(255) NOT NULL
 );
 
-CREATE TABLE district
-(
-    id            BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    district_name VARCHAR(255) NOT NULL,
-    province_id   INTEGER
-);
 
-CREATE TABLE province
-(
-    id            BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    province_name VARCHAR(255) NOT NULL,
-    country_id    INTEGER
-);
+
+CREATE INDEX idx_homestay_geom ON homestay USING gist (geom);

@@ -51,8 +51,6 @@ public class Booking extends BaseEntity {
     @Column(name = "request_id", nullable = false)
     private String requestId;
 
-    private Short version;
-
     @Column(name = "extra_data", columnDefinition = "text[]")
     @Type(ListArrayType.class)
     private List<String> extraData;
