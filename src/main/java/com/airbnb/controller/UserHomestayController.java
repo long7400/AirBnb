@@ -46,6 +46,6 @@ public class UserHomestayController {
                 .build();
 
         List<HomestayDTO> responseList = homestayService.searchHomestays(request);
-        return commonMapper.mapToCommonResponse(ResponseCode.INTERNAL_SERVER_ERROR, responseList);
+        return commonMapper.mapToCommonResponse(ResponseCode.SUCCESS, responseList);
     }
 }
