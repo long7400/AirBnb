@@ -4,15 +4,18 @@ import com.airbnb.enums.HomestayStatus;
 import com.airbnb.enums.HomestayType;
 import io.hypersistence.utils.hibernate.type.array.ListArrayType;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.Type;
 import org.locationtech.jts.geom.Point;
 
 import java.util.List;
 
+@SuperBuilder
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 @Table(name = "homestay")
 public class Homestay extends BaseEntity {
@@ -39,10 +42,6 @@ public class Homestay extends BaseEntity {
 
     private String address;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "ward_id", referencedColumnName = "id", nullable = false)
-    private Ward ward;
-
     @Column(name = "images", columnDefinition = "text[]")
     @Type(ListArrayType.class)
     private List<String> images;
@@ -60,7 +59,7 @@ public class Homestay extends BaseEntity {
     private Long version;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "created_by", insertable = false, updatable = false)
+    @JoinColumn(name = "owner", insertable = false, updatable = false)
     private User owner;
 
     @OneToMany(mappedBy = "homestay", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
@@ -80,6 +79,12 @@ public class Homestay extends BaseEntity {
     @Column(name = "latitude")
     private Double latitude;
 
-    @Column(name = "geom", columnDefinition = "geometry(Point, 3857)")
-    private Point geom;
+//    @Column(name = "geom", columnDefinition = "geometry(Point, 3857)")
+//    private Point geom;
+
+    @Transient
+    private Double nightAmount;
+
+    @Transient
+    private Double totalAmount;
 }

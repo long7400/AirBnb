@@ -1,6 +1,7 @@
 package com.airbnb.config;
 
 
+import com.airbnb.dto.auth.CustomUserDetails;
 import com.airbnb.entity.User;
 import com.airbnb.repository.UserRepository;
 import org.springframework.security.core.GrantedAuthority;
@@ -27,11 +28,11 @@ public class CustomUserDetailsService implements UserDetailsService {
                 .orElseThrow(() -> new UsernameNotFoundException("User not found with username: " + username));
 
         Set<GrantedAuthority> authorities = Set.of(new SimpleGrantedAuthority("ROLE_" + user.getType().name()));
-
-        return org.springframework.security.core.userdetails.User.builder()
-                .username(user.getUsername())
-                .password(user.getPassword())
-                .authorities(authorities)
-                .build();
+        return new CustomUserDetails(
+                user.getId(),
+                user.getUsername(),
+                user.getPassword(),
+                authorities
+        );
     }
 }

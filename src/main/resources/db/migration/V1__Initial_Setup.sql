@@ -9,6 +9,8 @@ CREATE TABLE homestay
     status       VARCHAR(20) NOT NULL,
     phone_number VARCHAR(20) NOT NULL,
 
+    owner        BIGINT      NOT NULL,
+
     address      TEXT        NOT NULL,
     longitude    DOUBLE PRECISION,
     latitude     DOUBLE PRECISION,
@@ -91,10 +93,10 @@ CREATE TABLE booking
 
 CREATE TABLE homestay_availability
 (
-    homestay_id BIGINT NOT NULL,
-    date        DATE   NOT NULL,
+    homestay_id BIGINT      NOT NULL,
+    date        DATE        NOT NULL,
     price       NUMERIC(12, 2),
-    status      SMALLINT,
+    status      VARCHAR(50) NOT NULL,
     PRIMARY KEY (homestay_id, date)
 );
 
@@ -113,13 +115,5 @@ CREATE TABLE homestay_amenity
     CONSTRAINT homestay_amenity_homestay_id_fk FOREIGN KEY (homestay_id) REFERENCES homestay (id),
     CONSTRAINT homestay_amenity_amenity_id_fk FOREIGN KEY (amenity_id) REFERENCES amenity (id)
 );
-
-CREATE TABLE ward
-(
-    id        BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    ward_name VARCHAR(255) NOT NULL
-);
-
-
 
 CREATE INDEX idx_homestay_geom ON homestay USING gist (geom);

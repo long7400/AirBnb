@@ -1,7 +1,6 @@
-package com.airbnb.dto.response.booking;
+package com.airbnb.dto.request.home;
 
-import com.airbnb.enums.BookingStatus;
-import com.fasterxml.jackson.annotation.JsonInclude;
+import com.airbnb.enums.AvailabilityStatus;
 import jakarta.persistence.Column;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -10,15 +9,20 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 
-@Builder
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
-@JsonInclude(JsonInclude.Include.NON_NULL)
-public class BookingResponse {
+@AllArgsConstructor
+@Builder
+public class HomestaySearchRequest {
 
-    @Column(name = "id")
-    private Long id;
+    @Column(name = "longitude")
+    private Double longitude;
+
+    @Column(name = "latitude")
+    private Double latitude;
+
+    @Column(name = "radius")
+    private Double radius;
 
     @Column(name = "checkin_date")
     private LocalDate checkinDate;
@@ -27,8 +31,8 @@ public class BookingResponse {
     private LocalDate checkoutDate;
 
     @Column(name = "guests")
-    private Short guests;
+    private Integer guests;
 
     @Column(name = "status")
-    private BookingStatus status;
+    private String status;
 }

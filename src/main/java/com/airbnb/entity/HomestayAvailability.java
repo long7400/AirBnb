@@ -1,5 +1,6 @@
 package com.airbnb.entity;
 
+import com.airbnb.enums.AvailabilityStatus;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -22,5 +23,7 @@ public class HomestayAvailability {
 
     private BigDecimal price;
 
-    private Short status;
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private AvailabilityStatus status;
 }
