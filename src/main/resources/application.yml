@@ -1,0 +1,32 @@
+server:
+  port: 8081
+spring:
+  application:
+    name: airbnb
+  datasource:
+    url: jdbc:postgresql://localhost:5432/airbnb
+    username: postgres
+    password: 1233
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      maximum-pool-size: 100
+      minimum-idle: 50
+      connection-timeout: 500000
+      idle-timeout: 500000
+      max-lifetime: 1000000
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        enable_lazy_load_no_trans: true
+        format_sql: true
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+      connection:
+        autocommit: false
+  flyway:
+    baseline-on-migrate: true
+    locations: classpath:db/migration
+    enabled: true
