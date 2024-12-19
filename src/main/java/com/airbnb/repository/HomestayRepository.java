@@ -2,6 +2,7 @@ package com.airbnb.repository;
 
 import com.airbnb.dto.response.home.HomestayDTO;
 import com.airbnb.entity.Homestay;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface HomestayRepository extends JpaRepository<Homestay, Long> {
@@ -41,4 +43,7 @@ public interface HomestayRepository extends JpaRepository<Homestay, Long> {
                                      @Param("nights") Integer nights,
                                      @Param("guests") Integer guests,
                                      @Param("status") String status);
+
+    @Query(value = " SELECT h FROM Homestay h WHERE h.id = :id  AND h.isDelete = FALSE ")
+    Optional<Homestay> findByIdAndNotDelete(@Param("id") @NotNull Long id);
 }

@@ -34,22 +34,4 @@ public class HomestayController {
         }
         return commonMapper.mapToCommonResponse(ResponseCode.INTERNAL_SERVER_ERROR, null);
     }
-
-    @GetMapping("/{id}")
-    public CommonResponse<HomestayResponse> getHomestayById(@PathVariable Long id) {
-        log.info("Fetching homestay with ID: {}", id);
-        return commonMapper.mapToCommonResponse(ResponseCode.SUCCESS, null);
-    }
-
-    @PutMapping("/{id}")
-    public CommonResponse<HomestayResponse> updateHomestay(@PathVariable Long id, @RequestBody HomestayRequest homestayDetails) {
-        log.info("Updating homestay with ID: {}", id);
-        return commonMapper.mapToCommonResponse(ResponseCode.SUCCESS, null);
-    }
-
-    @DeleteMapping("/{id}")
-    public CommonResponse<Map<String, Boolean>> deleteHomestay(@PathVariable Long id) {
-        log.info("Deleting homestay with ID: {}", id);
-        return commonMapper.mapToCommonResponse(ResponseCode.SUCCESS, null);
-    }
 }

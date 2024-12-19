@@ -8,6 +8,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Builder
@@ -31,4 +32,19 @@ public class BookingResponse {
 
     @Column(name = "status")
     private BookingStatus status;
+
+    @Column(name = "subtotal")
+    private BigDecimal subtotal;
+
+    @Column(name = "total_amount")
+    private BigDecimal totalAmount;
+
+    @Column(name = "currency")
+    private String currency;
+
+    @Column(name = "request_id")
+    private String requestId;
+
+    @Column(name = "note")
+    private String note;
 }
